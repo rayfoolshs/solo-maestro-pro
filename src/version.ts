@@ -1,5 +1,5 @@
-export const VERSION = '0.10.0';
-export const BUILD_DATE = '2026-11-10';
+export const VERSION = '0.11.0';
+export const BUILD_DATE = '2026-11-14';
 
 export interface Release {
   version: string;
@@ -10,6 +10,22 @@ export interface Release {
 
 /** Pre-release milestones. Newest first. */
 export const HISTORY: Release[] = [
+  {
+    version: '0.11.0',
+    date: '2026-11-14',
+    title: 'Solo Maestro Pro: local keys, guitar systems and lead sheet',
+    items: [
+      'Rebranded the app as Solo Maestro Pro with a new manifest, title, header and GitHub Pages base.',
+      'Local key-centre analysis detects modulations and lets you pin or clear a key centre per bar.',
+      'Guide-tone overlays show 3rds and 7ths plus ghosted targets for the next chord.',
+      'Guitar systems: tuning presets, capo, left-handed mode, CAGED boxes, 3NPS patterns and shell voicings.',
+      'Click any fret to hear a jazz-guitar audition; Hear scale and Hear arp audition the current harmony.',
+      'Music Stand mode adds a large transport bar, auto-scrolling chart, compact fretboard, Mixer sheet and Play Lock.',
+      'Lead sheet melody entry with Bravura noteheads, flags, rests, ties, accidentals and a Melody mixer channel.',
+      'Rhythm hits and melody notes round-trip through .gsm.json; the MIDI export gains an optional Melody track.',
+      'Tests expanded to 154 across theory, tunings, shapes, voice leading, melody, notation and MIDI.',
+    ],
+  },
   {
     version: '0.10.0',
     date: '2026-11-10',

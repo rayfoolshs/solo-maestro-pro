@@ -34,6 +34,7 @@ interface Props {
   tensions: boolean;
   onToggleTensions: () => void;
   voiceLeading: VoiceLeadingAnalysis | null;
+  standMode: boolean;
   barIndex: number;
   playingBar: number;
   playBeat: number;
@@ -77,7 +78,7 @@ function Legend({ showGuide = false, showShape = false }: { showGuide?: boolean;
   );
 }
 
-export function Fretboard({ candidate, chordPcs, currentChord, rootPc, flats, tensions, onToggleTensions, voiceLeading, barIndex, playingBar, playBeat }: Props) {
+export function Fretboard({ candidate, chordPcs, currentChord, rootPc, flats, tensions, onToggleTensions, voiceLeading, standMode, barIndex, playingBar, playBeat }: Props) {
   const [mode, setMode] = useState<'degrees' | 'notes'>('degrees');
   const [overlay, setOverlay] = useState<OverlayMode>('off');
   const [shapeMode, setShapeMode] = useState<ShapeMode>('off');
@@ -258,7 +259,7 @@ export function Fretboard({ candidate, chordPcs, currentChord, rootPc, flats, te
   const fretNumberY = boardBottom + 11;
 
   return (
-    <section className="card board">
+    <section className={`card board${standMode ? ' stand-board' : ''}`}>
       <div className="boardhead">
         <div>
           <div className="ttl">{view === 'fretboard' ? 'Fretboard' : 'Keyboard'}</div>

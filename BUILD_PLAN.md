@@ -1,9 +1,13 @@
-# Build plan — Guitar Solo Maestro
+# Build plan — Solo Maestro Pro
 
 A practice companion for soloing over changes: type a chart, get a scale for every chord,
 see it on a 24-fret neck, and play the progression with piano, bass and drums.
 
-Current build: **v0.4.2**. See `CHANGELOG.md` for history and `README.md` for usage.
+Current build: **v0.11.0**. See `CHANGELOG.md` for history and `README.md` for usage.
+
+> This file preserves the original architecture notes. The shipped feature set is now
+> tracked in [`CHANGELOG.md`](./CHANGELOG.md) and [`UPDATES.md`](./UPDATES.md); the
+> milestone checklist lives in [`Build Plan 1 and 2..md`](./Build%20Plan%201%20and%202..md).
 
 ---
 
@@ -12,16 +16,16 @@ Current build: **v0.4.2**. See `CHANGELOG.md` for history and `README.md` for us
 | Decision | Choice |
 | --- | --- |
 | Job | Practice companion — playback and per-chord scales are the centre |
-| Platform | Web app, desktop-first with a tablet-friendly stack; phone layout is planned |
+| Platform | Web app, responsive desktop/tablet/phone with a dedicated Music Stand mode |
 | Commercial | Product under rayfooproductions.com; permissive licensing only |
 | Input | Leadsheet — chords in a lane above a stave, no separate chord box |
 | Chords per bar | Up to 4, placed at beat positions |
-| Chart length | 4–32 bars; the stepper changes what is shown/played, never deletes |
+| Chart length | 4–64 bars; the stepper changes what is shown/played, never deletes |
 | Default chart | Blue Bossa, C minor, two 16-bar choruses (32 bars) |
-| Notation | Chords + scale lane; no rhythm slashes, no melody |
-| Harmony model | One key per chart; sections and modulation deferred |
+| Notation | Chords, scale lane, rhythm hits and a Bravura treble stave with melody |
+| Harmony model | Local key centres with pinned per-bar overrides |
 | Audio | General MIDI soundfont through a WASM synth, with a built-in fallback |
-| Document | Named charts, local storage, JSON import/export (planned) |
+| Document | Named charts, local storage, `.gsm.json` import/export and shareable state |
 
 ---
 
@@ -190,7 +194,7 @@ selection tint, loop band, beat dots, empty-slot markers). Systems avoid page br
 - Source: private GitHub repository.
 - Site: GitHub Pages, built by `.github/workflows/deploy.yml` on every push to `main`.
 - The build uses a relative `base`, so it works from a project sub-path
-  (`/guitar-solo-maestro/`), and the bank URL is resolved against `document.baseURI`.
+  (`/solo-maestro-pro/`), and the bank URL is resolved against `document.baseURI`.
 
 ---
 

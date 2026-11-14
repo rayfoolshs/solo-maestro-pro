@@ -4,7 +4,7 @@ Solo Maestro Pro is a practice companion for soloing over chord changes. It show
 scale to play over every chord, where those notes sit on the neck, and plays the
 progression back so you can practise against it.
 
-Current version: **0.8.0**.
+Current version: **0.11.0**.
 
 ## Quick start
 
@@ -49,10 +49,21 @@ Keyboard: **Space** toggles play/stop, **L** toggles the loop.
   arrow showing how far the next scale is from the current one.
 - **Chords / Slashes / Lead** switches the notation layer. Slashes show comping rhythm;
   Lead opens a treble stave with Bravura noteheads, stems, rests and ties.
-- In Lead mode, choose a **Pitch**, **Length** and optional **Tie next**, then click the
-  stave to add or remove melody notes. **Clear bar** empties the selected bar.
-- The **Hit** menu adds a rhythmic marker to the selected chord: `push` (anticipate a
-  half beat), `kick` (extra kick), `stop` (short stab then silence) or `slash`.
+- The Leadsheet always shows the chord grid plus a treble stave. Choose a **Pitch**,
+  **Length** and optional **Tie next**, then click the stave to add or remove melody
+  notes. **Clear bar** empties the selected bar.
+
+### Music Stand mode
+
+Click **Stand** in the header for a phone/tablet practice layout. The regular header is
+replaced by a large transport bar with Play/Stop, tempo −/+, an A–B loop toggle, and a
+bar/beat counter. The chord grid switches to 2 bars per row on a phone and 4 on a tablet,
+and follows the active playback bar with smooth auto-scroll.
+
+A compact fretboard strip sits below the chart with quick position-window buttons. Use the
+fixed bottom dock to jump to **Chart** or **Fretboard**, open the **Mixer** in a bottom
+sheet, or enable **Lock**. Lock prevents accidental chord and melody edits while you
+perform. **Exit** returns to the normal editor.
 
 ### Mixer
 

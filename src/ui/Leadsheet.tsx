@@ -31,6 +31,8 @@ interface Props {
   chart: Chart;
   keyInfo: KeyInfo;
   view: 'fit' | 'comfortable';
+  standMode: boolean;
+  playLock: boolean;
   selection: { bar: number; slotId: string | null };
   playing: boolean;
   playBar: number;
@@ -58,7 +60,7 @@ interface Props {
 const gutterFor = (accidentals: number) => 64 + accidentals * 12;
 
 export function Leadsheet(props: Props) {
-  const { chart, keyInfo, view, selection, playing, playBar, suggestions, transitions, keySpans, selectedLocalKeyName, selectedCandidate, onPinKey, onClearKey, onSelect, onCommit, onMelodyNote, onMelodyRemove, onMelodyClear, onBarCount, onToggleView, global } = props;
+  const { chart, keyInfo, view, standMode, playLock, selection, playing, playBar, suggestions, transitions, keySpans, selectedLocalKeyName, selectedCandidate, onPinKey, onClearKey, onSelect, onCommit, onMelodyNote, onMelodyRemove, onMelodyClear, onBarCount, onToggleView, global } = props;
   const bpb = beatsPerBar(chart);
   const sig = keySignature(keyInfo);
   const styleLabelText = styleLabel(chart.style);
@@ -69,6 +71,20 @@ export function Leadsheet(props: Props) {
   const [melodyPitch, setMelodyPitch] = useState('60');
   const [melodyDuration, setMelodyDuration] = useState(1);
   const [tieNext, setTieNext] = useState(false);
+  const [narrow, setNarrow] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onResize = () => setNarrow(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    if (!standMode || !playing) return;
+    const active = chartRef.current?.querySelector('.barx.playing');
+    active?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [standMode, playing, playBar]);
 
   const pitchOptions = useMemo(() => {
     const pcs = new Set(selectedCandidate?.pcs ?? [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
@@ -378,6 +394,7 @@ export function Leadsheet(props: Props) {
                             className="chordbtn"
                             onClick={() => {
                               onSelect(barIndex, slot?.id ?? null);
+                              if (standMode && playLock) return;
                               setEdit({ bar: barIndex, beat, value: slot?.input ?? '' });
                             }}
                             title={slot ? 'Edit chord' : 'Add chord'}
@@ -413,7 +430,7 @@ export function Leadsheet(props: Props) {
                   const barIndex = startBar + bi;
                   return (
                     <div key={bar.id} className="blbar">
-                      {interactive && Array.from({ length: bpb * 4 }).map((_, cell) => (
+                      {interactive && !(standMode && playLock) && Array.from({ length: bpb * 4 }).map((_, cell) => (
                         <button
                           key={cell}
                           className="melodycell"
@@ -493,6 +510,8 @@ export function Leadsheet(props: Props) {
     });
   }
 
+  const perSystem = standMode ? (narrow ? 2 : 4) : view === 'fit' ? 8 : 4;
+
   return (
     <section className="card leadsheet">
       <div className="print-head">
@@ -524,6 +543,7 @@ export function Leadsheet(props: Props) {
         <button className="chip btn" onClick={onToggleView}>{view === 'fit' ? 'Fit' : 'Comfort'}</button>
       </div>
 
+      {!standMode && (
       <div className="melodybar">
           <span className="lab">Melody</span>
           <label className="sheetctl">
@@ -551,9 +571,10 @@ export function Leadsheet(props: Props) {
           <button className="chip btn" onClick={() => onMelodyClear(selection.bar)}>Clear bar</button>
           <span className="muted">Click the stave to add or remove notes.</span>
       </div>
+      )}
 
-      <div className={`chart screen-chart ${view}${drag ? ' dragging' : ''}`}>
-        {renderChart(view === 'fit' ? 8 : 4, gutterFor(sig.count), true)}
+      <div ref={chartRef} className={`chart screen-chart ${view}${drag ? ' dragging' : ''}`}>
+        {renderChart(perSystem, gutterFor(sig.count), true)}
       </div>
 
       <div className="summary">

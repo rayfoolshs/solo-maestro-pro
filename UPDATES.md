@@ -1,11 +1,11 @@
 # Updates
 
-Planned and in-progress work for Guitar Solo Maestro, grouped into version
+Planned and in-progress work for Solo Maestro Pro, grouped into version
 milestones. Released history lives in [`CHANGELOG.md`](./CHANGELOG.md); this file
 tracks what is coming next so each milestone can be copied into the changelog and
 `src/version.ts` when it ships.
 
-- **Current release:** `0.10.0` (2026-11-10)
+- **Current release:** `0.11.0` (2026-11-14)
 - **Drafted:** 2026-11-08
 - **Versioning:** pre-1.0, one minor bump per feature set; patches for fixes.
 
@@ -19,8 +19,36 @@ tracks what is coming next so each milestone can be copied into the changelog an
 | `0.8.0` | MIDI export | **Shipped 2026-11-08** |
 | `0.9.0` | Transpose charts | **Shipped 2026-11-08** |
 | `0.10.0` | Keyboard view and live MIDI input | **Shipped 2026-11-10** |
+| `0.11.0` | Solo Maestro Pro: local keys, guitar systems, lead sheet | **Shipped 2026-11-14** |
 
 ---
+
+## 0.11.0 — Solo Maestro Pro: local keys, guitar systems and lead sheet
+
+**Status:** shipped in `0.11.0` (2026-11-14) — see `CHANGELOG.md`.
+
+**Goal:** finish the Solo Maestro Pro rebrand and the analysis, guitar and notation
+features that make the app useful on a music stand.
+
+### Shipped
+
+- Rebranded title, manifest, header, version history, package metadata and Pages base.
+- Local key-centre detection with pinned per-bar overrides.
+- Guide-tone / next-chord target voice-leading and fretboard overlays.
+- Tuning presets, capo, left-handed mirroring, CAGED, 3NPS and shell voicings.
+- Fret click audition, Hear Scale and Hear Arp.
+- Music Stand mode with large transport, auto-scroll, compact fretboard, Mixer sheet and
+  Play Lock.
+- Lead-sheet melody entry with Bravura notation, rhythm hits, ties, rests and a Melody
+  mixer/MIDI track.
+- Test suite expanded to 154.
+
+### Remaining
+
+- Live microphone pitch detection (Milestone 6).
+- Live MIDI step entry for melody and true beam grouping.
+- iReal Pro import, walking-bass realism and shareable URL hash from the older
+  `Build.md` phase plan.
 
 ## 0.5.0 — Styles and repertoire
 

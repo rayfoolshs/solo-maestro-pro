@@ -19,6 +19,7 @@ import { Mixer } from './ui/Mixer';
 import { Fretboard } from './ui/Fretboard';
 import { StandardsModal } from './ui/StandardsModal';
 import { ChartsModal } from './ui/ChartsModal';
+import { StandBar } from './ui/StandBar';
 
 const STORAGE_KEY = 'gsm.chart.v2';
 
@@ -58,6 +59,9 @@ export default function App() {
   const [bank, setBank] = useState<LoadProgress>({ phase: 'idle', loaded: 0, total: 0 });
   const [standardsOpen, setStandardsOpen] = useState(false);
   const [chartsOpen, setChartsOpen] = useState(false);
+  const [standMode, setStandMode] = useState(false);
+  const [playLock, setPlayLock] = useState(false);
+  const [mixerSheet, setMixerSheet] = useState(false);
 
   const key: KeyInfo = useMemo(
     () => (chart.keyManual ? makeKey(chart.keyManual.tonic, chart.keyManual.mode) : detectKey(parseSlots(chart)).key),
@@ -333,8 +337,33 @@ export default function App() {
 
   const setBarCount = (n: number) => setChart((c) => setVisibleBars(c, n));
 
+  const mixerNode = (
+        <Mixer
+          chart={chart}
+          playing={playing}
+          position={position}
+          volumes={volumes}
+          mutes={mutes}
+          onVolume={(ch, db) => setVolumes((v) => ({ ...v, [ch]: db }))}
+          onMute={(ch, m) => setMutes((m2) => ({ ...m2, [ch]: m }))}
+          onSwing={(swing) => setChart((c) => ({ ...c, swing }))}
+          transpose={chart.transpose ?? 0}
+          onTranspose={transposeBy}
+          onTransposeReset={resetTranspose}
+          pianoOctave={chart.pianoOctave ?? 0}
+          onPianoOctave={(v) => setChart((c) => ({ ...c, pianoOctave: Math.max(-2, Math.min(2, v)) }))}
+          onTempo={(tempo) => setChart((c) => ({ ...c, tempo }))}
+          onStyle={(style) => setChart((c) => ({ ...c, style }))}
+          onPlay={play}
+          onStop={stop}
+          range={range}
+          loop={loop}
+          bank={bank}
+        />
+  );
+
   return (
-    <div className="app">
+    <div className={`app${standMode ? ' stand-mode' : ''}`}>
       <Header
         chart={chart}
         keyName={key.name}
@@ -342,6 +371,8 @@ export default function App() {
         playing={playing}
         loop={loop}
         range={range}
+        standMode={standMode}
+        onToggleStandMode={() => setStandMode((value) => !value)}
         onPlay={play}
         onStop={stop}
         onLoopChange={setLoop}
@@ -357,6 +388,20 @@ export default function App() {
         onExportMidi={exportMidiFile}
         actions={chartActions}
       />
+
+      {standMode && (
+        <StandBar
+          chart={chart}
+          playing={playing}
+          position={position}
+          loop={loop}
+          onPlay={play}
+          onStop={stop}
+          onTempo={(tempo) => setChart((c) => ({ ...c, tempo }))}
+          onToggleLoop={() => setLoop((value) => ({ ...value, mode: value.mode === 'off' ? 'visible' : 'off' }))}
+          onExit={() => { setStandMode(false); setPlayLock(false); setMixerSheet(false); }}
+        />
+      )}
 
       <StandardsModal
         open={standardsOpen}
@@ -376,6 +421,8 @@ export default function App() {
           chart={chart}
           keyInfo={key}
           view={view}
+          standMode={standMode}
+          playLock={playLock}
           selection={selection}
           playing={position.playing && !position.counting}
           playBar={position.bar}
@@ -401,28 +448,7 @@ export default function App() {
           }
         />
 
-        <Mixer
-          chart={chart}
-          playing={playing}
-          position={position}
-          volumes={volumes}
-          mutes={mutes}
-          onVolume={(ch, db) => setVolumes((v) => ({ ...v, [ch]: db }))}
-          onMute={(ch, m) => setMutes((m2) => ({ ...m2, [ch]: m }))}
-          onSwing={(swing) => setChart((c) => ({ ...c, swing }))}
-          transpose={chart.transpose ?? 0}
-          onTranspose={transposeBy}
-          onTransposeReset={resetTranspose}
-          pianoOctave={chart.pianoOctave ?? 0}
-          onPianoOctave={(v) => setChart((c) => ({ ...c, pianoOctave: Math.max(-2, Math.min(2, v)) }))}
-          onTempo={(tempo) => setChart((c) => ({ ...c, tempo }))}
-          onStyle={(style) => setChart((c) => ({ ...c, style }))}
-          onPlay={play}
-          onStop={stop}
-          range={range}
-          loop={loop}
-          bank={bank}
-        />
+        {!standMode && mixerNode}
 
         <section className="card whylane">
           {selectedChord && selectedCandidate ? (
@@ -470,11 +496,45 @@ export default function App() {
           tensions={tensions}
           onToggleTensions={() => setTensions((t) => !t)}
           voiceLeading={voiceLeading}
+          standMode={standMode}
           barIndex={selectedSlot?.barIndex ?? -1}
           playingBar={playing ? position.bar : -1}
           playBeat={playing ? position.beat : 0}
         />
       </main>
+
+      {standMode && (
+        <>
+          <nav className="stand-dock" aria-label="Music stand navigation">
+            <button onClick={() => document.querySelector('.leadsheet')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+              Chart
+            </button>
+            <button onClick={() => document.querySelector('.board')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+              Fretboard
+            </button>
+            <button onClick={() => setMixerSheet(true)}>Mixer</button>
+            <button
+              className={playLock ? 'on' : ''}
+              onClick={() => setPlayLock((value) => !value)}
+            >
+              {playLock ? 'Locked' : 'Lock'}
+            </button>
+          </nav>
+
+          {mixerSheet && (
+            <div className="stand-sheet-backdrop" onClick={() => setMixerSheet(false)}>
+              <div className="stand-sheet" onClick={(event) => event.stopPropagation()}>
+                <div className="stand-sheet-head">
+                  <b>Mixer</b>
+                  <button onClick={() => setMixerSheet(false)} aria-label="Close mixer">×</button>
+                </div>
+                {mixerNode}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
       {status && <div className="toast">{status}</div>}
     </div>
   );

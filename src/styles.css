@@ -812,3 +812,122 @@ main > .board { grid-column: 1 / -1; }
 .transposer .tstep button:hover { background: #f6f2e8; }
 .transposer .tstep button.tval { min-width: 36px; background: var(--amber-soft); border-color: #e4c9a8; color: var(--amber-deep); }
 .transposer .tstep button:disabled { opacity: .45; }
+
+/* ---------------- music stand mode ---------------- */
+.stand-mode .topbar { display: none; }
+.standbar {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 8px 14px calc(8px + env(safe-area-inset-top, 0px));
+  background: #171410; color: #f4efe3;
+  border-bottom: 1px solid rgba(244, 239, 227, 0.12);
+}
+.stand-title { display: flex; flex-direction: column; min-width: 150px; }
+.stand-title b {
+  font-family: 'Iowan Old Style', Palatino, Georgia, serif;
+  font-size: 17px; font-weight: 600; line-height: 1.15;
+}
+.stand-title span {
+  font-size: 10px; color: #a79c88; letter-spacing: 0.04em;
+  text-transform: uppercase; margin-top: 1px;
+}
+.stand-transport { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+.stand-play {
+  width: 54px; height: 54px; border-radius: 50%; border: none;
+  background: var(--amber); color: #fff; font-size: 20px; line-height: 1;
+  box-shadow: 0 8px 18px -8px rgba(180, 83, 9, 0.9);
+}
+.stand-play.on { background: #8a3e07; }
+.stand-tempo {
+  display: flex; align-items: center; gap: 2px; height: 48px;
+  border: 1px solid rgba(244, 239, 227, 0.2); border-radius: 10px;
+  background: rgba(244, 239, 227, 0.06);
+}
+.stand-tempo button {
+  width: 44px; height: 46px; border: none; background: transparent;
+  color: #f4efe3; font-size: 20px;
+}
+.stand-tempo b {
+  min-width: 42px; text-align: center; font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.stand-toggle, .stand-exit {
+  min-height: 44px; padding: 0 14px; border-radius: 9px;
+  border: 1px solid rgba(244, 239, 227, 0.2);
+  background: rgba(244, 239, 227, 0.06);
+  color: #e9e3d6; font-size: 12px; font-weight: 650;
+}
+.stand-toggle.on { background: var(--amber); border-color: var(--amber); color: #fff; }
+.stand-exit { background: #2a241d; }
+.stand-mode main {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 10px 10px 96px;
+  max-width: 1200px;
+}
+.stand-mode main > .mixer, .stand-mode main > .whylane { display: none; }
+.stand-mode main > .leadsheet, .stand-mode main > .board { grid-column: 1; grid-row: auto; }
+.stand-mode .leadsheet .cardhead .sub, .stand-mode .leadsheet .summary { display: none; }
+.stand-mode .leadsheet .chordbtn { font-size: 34px; }
+.stand-mode .leadsheet .chart .sys { padding-top: 12px; }
+.stand-mode .board .fretcontrols,
+.stand-mode .board .guidebar,
+.stand-mode .board .legend,
+.stand-mode .board .boardhead .seg,
+.stand-mode .board .kswitch,
+.stand-mode .board .boardhead .chip { display: none; }
+.stand-mode .board .foot .pos { min-height: 44px; padding: 0 12px; }
+.stand-dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+  display: flex; gap: 6px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+  background: rgba(23, 20, 16, 0.96);
+  border-top: 1px solid rgba(244, 239, 227, 0.14);
+  backdrop-filter: blur(8px);
+}
+.stand-dock button {
+  flex: 1; min-height: 48px; border-radius: 9px;
+  border: 1px solid rgba(244, 239, 227, 0.18);
+  background: rgba(244, 239, 227, 0.06);
+  color: #f4efe3; font-size: 12px; font-weight: 650;
+}
+.stand-dock button.on { background: var(--amber); border-color: var(--amber); color: #fff; }
+.stand-sheet-backdrop {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(20, 18, 15, 0.45);
+  display: flex; align-items: flex-end;
+}
+.stand-sheet {
+  width: 100%; max-height: 78vh; overflow: auto;
+  background: var(--paper); border-radius: 18px 18px 0 0;
+  box-shadow: 0 -20px 50px rgba(20, 18, 15, 0.35);
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+.stand-sheet-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; background: var(--paper); z-index: 1;
+}
+.stand-sheet-head b { font-size: 15px; }
+.stand-sheet-head button {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1px solid var(--line); background: #fff; font-size: 18px;
+}
+.stand-sheet .mixer {
+  border-radius: 0; box-shadow: none; border-left: none; border-right: none;
+}
+
+@media (max-width: 767px) {
+  .stand-mode .leadsheet .scrow { display: none; }
+  .stand-mode .leadsheet .cardhead .chip,
+  .stand-mode .leadsheet .cardhead .stepper,
+  .stand-mode .leadsheet .cardhead .chip.btn { display: none; }
+  .stand-mode .leadsheet .chordbtn { font-size: 40px; }
+  .stand-mode .leadsheet .staff { height: 44px; }
+  .stand-mode .leadsheet .staff .stafflines { height: 44px; }
+  .standbar { gap: 8px; padding: 8px 10px; }
+  .stand-title { min-width: 0; }
+  .stand-title b { font-size: 15px; }
+  .stand-transport { gap: 6px; }
+  .stand-play { width: 48px; height: 48px; }
+  .stand-toggle, .stand-exit { padding: 0 10px; font-size: 11px; }
+}

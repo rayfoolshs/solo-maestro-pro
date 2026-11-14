@@ -1,11 +1,11 @@
 # Solo Maestro Pro — Build Plan (Sections 1 & 2)
 
 Architecture rule:
-Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeScript (`src/theory/`, `src/chart/`, `src/arrange/`) with zero React or Web Audio imports. Existing 103 unit tests + new tests must pass (`npm test`) and `npm run build` must succeed after every milestone.
+Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeScript (`src/theory/`, `src/chart/`, `src/arrange/`) with zero React or Web Audio imports. All 154 unit tests must pass (`npm test`) and `npm run build` must succeed after every milestone.
 
 ---
 
-## Milestone 1: Local Key-Centre & Modulation Detection
+## Milestone 1: Local Key-Centre & Modulation Detection — **shipped in 0.11.0**
 **Goal:** Replace single-key-per-chart analysis with segmented local key centres (e.g., *Blue Bossa*: `Cm` → `D♭maj` in bars 9–12 → `Cm`), with manual override support.
 
 ### 1.1 Pure Theory (`src/theory/`)
@@ -34,7 +34,7 @@ Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeSc
 
 ---
 
-## Milestone 2: Guide-Tone (3rds & 7ths) & "Next Chord" Target Overlay
+## Milestone 2: Guide-Tone (3rds & 7ths) & "Next Chord" Target Overlay — **shipped in 0.11.0**
 **Goal:** Train horizontal voice-leading across barlines on the 24-fret neck.
 
 ### 2.1 Pure Theory (`src/theory/`)
@@ -54,7 +54,7 @@ Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeSc
 
 ---
 
-## Milestone 3: Guitar Systems (CAGED / 3NPS / Shells), Tunings & Audition
+## Milestone 3: Guitar Systems (CAGED / 3NPS / Shells), Tunings & Audition — **shipped in 0.11.0**
 **Goal:** Make the fretboard match how guitarists physically organize the neck and train their ear.
 
 ### 3.1 Tunings, Capo & Left-Handed Support (`src/theory/`, `src/ui/Fretboard`)
@@ -79,7 +79,7 @@ Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeSc
 
 ---
 
-## Milestone 4: Phone & Tablet "Music Stand" Layout
+## Milestone 4: Phone & Tablet "Music Stand" Layout — **shipped in 0.11.0**
 **Goal:** Make the app genuinely usable on a phone/tablet sitting on a music stand beside an amp.
 
 ### 4.1 Responsive Breakpoints & Stand Mode (`src/ui/`)
@@ -96,7 +96,7 @@ Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeSc
 
 ---
 
-## Milestone 5: Melody Entry & Rhythm Notation
+## Milestone 5: Melody Entry & Rhythm Notation — **shipped in 0.11.0**
 **Goal:** Turn chord-only charts into complete leadsheets using the bundled Bravura SMuFL glyphs.
 
 ### 5.1 Chart & Arrangement Data Model (`src/chart/`, `src/arrange/`)
@@ -117,7 +117,7 @@ Keep all music theory, chart schema/parsing, and note/tuning math in pure TypeSc
 
 ---
 
-## Milestone 6: Live Microphone Pitch Detection → Fretboard
+## Milestone 6: Live Microphone Pitch Detection → Fretboard — **not started**
 **Goal:** Light up the fretboard in real time from an acoustic or electric guitar via microphone/audio interface (mirroring Web MIDI for Keyboard).
 
 ### 6.1 Audio Pitch Pipeline (`src/audio/`)

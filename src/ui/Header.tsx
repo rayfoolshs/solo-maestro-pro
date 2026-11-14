@@ -14,6 +14,8 @@ interface Props {
   playing: boolean;
   loop: LoopState;
   range: { from: number; to: number };
+  standMode: boolean;
+  onToggleStandMode: () => void;
   onPlay: () => void;
   onStop: () => void;
   onLoopChange: (l: LoopState) => void;
@@ -147,6 +149,18 @@ export function Header(props: Props) {
           <path d="M13.5 2.5H9.3c-.9 0-1.3.4-1.3 1.2v9.8c0-.8.4-1.2 1.3-1.2h4.2z" />
         </svg>
         <span className="stdbtn-label">Standards</span>
+      </button>
+
+      <button
+        className={`ctl btn stdbtn standbtn${props.standMode ? ' on' : ''}`}
+        onClick={props.onToggleStandMode}
+        title="Music Stand mode"
+      >
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
+          <rect x="2" y="2" width="12" height="12" rx="2" />
+          <path d="M5 11V6.5M8 11V4.5M11 11V8" strokeLinecap="round" />
+        </svg>
+        <span className="stdbtn-label">Stand</span>
       </button>
 
       <button className="btn-print" onClick={props.onPrint}>

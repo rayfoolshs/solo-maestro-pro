@@ -1,6 +1,6 @@
 # Solo Maestro Pro — Visual Theme
 
-Version **0.10.0** · 2026-11-10
+Version **0.11.0** · 2026-11-14
 
 The rules behind how the app looks: the palette, the type, the notation artwork and the
 small set of semantics that decide which note is which colour. Everything here is taken

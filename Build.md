@@ -3,6 +3,11 @@
 Base: `guitar-solo-maestro` v0.10.0 (`src/theory/`, `src/chart/`, `src/arrange/`, `src/audio/`, `src/ui/`).
 Rule: Keep all music theory, chart parsing, and arrangement logic in pure TypeScript (`src/theory/`, `src/chart/`, `src/arrange/`) with zero React/Web Audio dependencies, and keep `npm test` green at every phase.
 
+> **Status (v0.11.0):** Phase 0 and the theory, fretboard, arrangement-realisation,
+> lead-sheet and Music Stand work are shipped. Remaining: live microphone pitch detection,
+> live MIDI melody step entry, true beam grouping, iReal Pro import/share links, and
+> soundfont caching. See `CHANGELOG.md`.
+
 ---
 
 ## Phase 0: Rebrand & Deploy Config

@@ -1,7 +1,34 @@
 # Changelog
 
-All notable changes to Guitar Solo Maestro. Pre-release milestones while the app is
+All notable changes to Solo Maestro Pro. Pre-release milestones while the app is
 being built; newest first.
+
+## 0.11.0 — 2026-11-14 · Solo Maestro Pro: local keys, guitar systems and lead sheet
+
+- **Rebrand** — the app is now **Solo Maestro Pro** with a new title, manifest, header,
+  version modal, package metadata and GitHub Pages base (`/solo-maestro-pro/`). Old
+  `.gsm.json` files using `guitar-solo-maestro/chart` still import.
+- **Local key centres** — a windowed cadence detector with a dynamic-programming
+  modulation penalty finds real centres instead of one key per chart. Pinned spans can be
+  added or cleared per bar, and persist through save/export/transposition.
+- **Guide tones and next-chord targets** — `analyzeVoiceLeading()` extracts 3rds/7ths (or
+  6th/4th where appropriate), pairs them with the nearest next-chord guide tones, and
+  feeds a fretboard overlay with amber guide halos and ghosted target rings.
+- **Guitar systems** — tuning presets (Standard, Drop D, DADGAD, Open G, 7-string, 4-string
+  bass), capo, left-handed mirroring, CAGED position boxes, 3-notes-per-string patterns and
+  shell voicings on the 6-4-3 / 5-4-3 string sets.
+- **Audition** — clicking a fret plays a plucked jazz-guitar note; **Hear scale** and
+  **Hear arp** audition the current scale or arpeggio without changing the chart.
+- **Music Stand mode** — large sticky transport bar, 2 bars per row on phones / 4 on
+  tablets, smooth auto-scroll to the active bar, compact fretboard strip, bottom dock,
+  Mixer bottom sheet and a Play Lock that prevents accidental chart edits.
+- **Lead sheet** — the Leadsheet always shows chords over a Bravura treble stave. Click the
+  stave to enter melody notes with pitch, length, ties, rests, accidentals and note
+  flags; the Melody channel has its own mixer volume/mute and an optional MIDI track.
+- **Rhythm and melody data** — optional `hit` markers (`push`, `kick`, `stop`, `slash`) and
+  per-bar `melody` notes round-trip through `.gsm.json` and transpose with the chart.
+- Tests expanded to **154** across local keys, voice leading, tunings, shapes, notation,
+  melody, MIDI and the existing theory/arrangement suites.
 
 ## 0.10.0 — 2026-11-10 · Keyboard view and live MIDI input
 

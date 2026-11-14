@@ -46,7 +46,7 @@ src/
 
   ui/           React components
     Header.tsx, Leadsheet.tsx, Mixer.tsx, Fretboard.tsx, Keyboard.tsx,
-    MidiBar.tsx, StandardsModal.tsx, ChartsModal.tsx, VersionModal.tsx
+    MidiBar.tsx, StandBar.tsx, StandardsModal.tsx, ChartsModal.tsx, VersionModal.tsx
 
   App.tsx       state wiring between the model, UI and audio
   version.ts    version + release history
