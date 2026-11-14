@@ -1,0 +1,19 @@
+{
+  "name": "Solo Maestro Pro",
+  "short_name": "Solo Maestro",
+  "description": "Practice companion for soloing over chord changes — chord scales, fretboard, and GM backing tracks.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#171410",
+  "theme_color": "#171410",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
