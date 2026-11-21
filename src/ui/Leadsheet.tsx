@@ -468,6 +468,13 @@ export function Leadsheet(props: Props) {
               </svg>
           </div>
 
+          <div className="numrow" style={{ gridTemplateColumns: gridCols }} aria-hidden>
+            <div />
+            {sys.map((bar, bi) => (
+              <div className="barnum" key={bar.id}>{startBar + bi + 1}</div>
+            ))}
+          </div>
+
           <div className="scrow" style={{ gridTemplateColumns: gridCols }}>
             <div />
             {sys.map((bar, bi) => {

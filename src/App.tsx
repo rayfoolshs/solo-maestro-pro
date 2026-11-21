@@ -16,9 +16,11 @@ import type { LoadProgress } from './audio/soundfont';
 import { Header } from './ui/Header';
 import { Leadsheet } from './ui/Leadsheet';
 import { Mixer } from './ui/Mixer';
+import { LoopPanel } from './ui/LoopPanel';
 import { Fretboard } from './ui/Fretboard';
 import { StandardsModal } from './ui/StandardsModal';
 import { ChartsModal } from './ui/ChartsModal';
+import { ManualModal } from './ui/ManualModal';
 import { StandBar } from './ui/StandBar';
 
 const STORAGE_KEY = 'gsm.chart.v2';
@@ -46,9 +48,9 @@ function loadChart(): Chart {
 
 export default function App() {
   const [chart, setChart] = useState<Chart>(loadChart);
-  const [selection, setSelection] = useState<{ bar: number; slotId: string | null }>({ bar: 5, slotId: null });
+  const [selection, setSelection] = useState<{ bar: number; slotId: string | null }>({ bar: 0, slotId: null });
   const [view, setView] = useState<'fit' | 'comfortable'>('fit');
-  const [loop, setLoop] = useState<LoopState>({ mode: 'visible', from: 1, to: 8 });
+  const [loop, setLoop] = useState<LoopState>({ mode: 'off', from: 1, to: 8 });
   const [playing, setPlaying] = useState(false);
   const [position, setPosition] = useState<Position>({ bar: 0, beat: 0, playing: false, counting: false });
   const [volumes, setVolumes] = useState({ piano: -6, bass: -9, drums: -8, melody: -9 });
@@ -59,6 +61,7 @@ export default function App() {
   const [bank, setBank] = useState<LoadProgress>({ phase: 'idle', loaded: 0, total: 0 });
   const [standardsOpen, setStandardsOpen] = useState(false);
   const [chartsOpen, setChartsOpen] = useState(false);
+  const [manualOpen, setManualOpen] = useState(false);
   const [standMode, setStandMode] = useState(false);
   const [playLock, setPlayLock] = useState(false);
   const [mixerSheet, setMixerSheet] = useState(false);
@@ -203,14 +206,17 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      // Global transport/loop shortcuts stay out of the way while a dialog is open.
+      if (manualOpen || standardsOpen || chartsOpen) return;
       if (e.code === 'Space') { e.preventDefault(); play(); }
       if (e.key === 'l' || e.key === 'L') {
         setLoop((l) => ({ ...l, mode: l.mode === 'off' ? 'visible' : 'off' }));
       }
+      if (e.key === '?' || (e.key === '/' && e.shiftKey)) { e.preventDefault(); setManualOpen(true); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [play]);
+  }, [play, manualOpen, standardsOpen, chartsOpen]);
 
   const onSelect = (bar: number, slotId: string | null) => setSelection({ bar, slotId });
 
@@ -369,13 +375,10 @@ export default function App() {
         keyName={key.name}
         confidence={detection.confidence}
         playing={playing}
-        loop={loop}
-        range={range}
         standMode={standMode}
         onToggleStandMode={() => setStandMode((value) => !value)}
         onPlay={play}
         onStop={stop}
-        onLoopChange={setLoop}
         onTempo={(tempo) => setChart((c) => ({ ...c, tempo }))}
         onStyle={(style: Style) => setChart((c) => ({ ...c, style }))}
         onKeyChange={(name) => {
@@ -383,6 +386,7 @@ export default function App() {
           setChart((c) => ({ ...c, keyManual: { tonic: Number(tonic), mode: mode as 'major' | 'minor' } }));
         }}
         onPrint={() => window.print()}
+        onOpenManual={() => setManualOpen(true)}
         onOpenStandards={() => setStandardsOpen(true)}
         onOpenCharts={() => setChartsOpen(true)}
         onExportMidi={exportMidiFile}
@@ -416,6 +420,8 @@ export default function App() {
         onLoad={(next) => loadPreset(() => next, 0)}
       />
 
+      <ManualModal open={manualOpen} onClose={() => setManualOpen(false)} />
+
       <main>
         <Leadsheet
           chart={chart}
@@ -448,7 +454,12 @@ export default function App() {
           }
         />
 
-        {!standMode && mixerNode}
+        {!standMode && (
+          <div className="rail">
+            {mixerNode}
+            <LoopPanel loop={loop} onChange={setLoop} />
+          </div>
+        )}
 
         <section className="card whylane">
           {selectedChord && selectedCandidate ? (

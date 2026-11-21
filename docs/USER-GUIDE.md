@@ -15,8 +15,8 @@ npm test
 npm run build
 ```
 
-The app opens on the last working chart from your browser, or **Blue Bossa** on a fresh
-install.
+The app opens on the last working chart from your browser, or **Autumn Leaves** on a fresh
+install. The header's **Manual** button (or **?**) opens this guide inside the app.
 
 ## The screen
 
@@ -32,10 +32,10 @@ install.
 | **Standards** | Open the bundled **Core 100** library |
 | **Chart ▾** | Presets, New chart, both libraries, Export MIDI, Clear chords |
 | **Print** | A4 landscape leadsheet |
-| **Loop** | Loop off / visible bars / A–B range |
+| **Manual** | The in-app manual (also **?**) |
 | **Play / Stop** | Transport |
 
-Keyboard: **Space** toggles play/stop, **L** toggles the loop.
+Keyboard: **Space** toggles play/stop, **L** toggles the loop, **?** opens the manual.
 
 ### Leadsheet
 
@@ -74,6 +74,8 @@ perform. **Exit** returns to the normal editor.
   the original key.
 - **Oct** shifts the piano voicing −2…+2 octaves.
 - **Swing** 0–100 % for the jazz feels (the shuffle is a fixed 12/8 feel).
+- **Loop**, the panel directly under the mixer: **Off** (the default), **Visible** bars or
+  an **A–B** range, with A and B bar steppers. Dragging across the chart also sets A–B.
 
 ### Fretboard
 

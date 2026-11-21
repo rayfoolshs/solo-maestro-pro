@@ -5,24 +5,20 @@ import { ALL_KEYS } from '../theory/keys';
 import { VERSION } from '../version';
 import { VersionModal } from './VersionModal';
 
-interface LoopState { mode: 'off' | 'visible' | 'range'; from: number; to: number }
-
 interface Props {
   chart: Chart;
   keyName: string;
   confidence: number;
   playing: boolean;
-  loop: LoopState;
-  range: { from: number; to: number };
   standMode: boolean;
   onToggleStandMode: () => void;
   onPlay: () => void;
   onStop: () => void;
-  onLoopChange: (l: LoopState) => void;
   onTempo: (bpm: number) => void;
   onStyle: (s: Style) => void;
   onKeyChange: (value: string) => void;
   onPrint: () => void;
+  onOpenManual: () => void;
   onOpenStandards: () => void;
   onOpenCharts: () => void;
   onExportMidi: () => void;
@@ -40,7 +36,7 @@ interface Props {
 }
 
 export function Header(props: Props) {
-  const [menu, setMenu] = useState<'chart' | 'loop' | null>(null);
+  const [menu, setMenu] = useState<'chart' | null>(null);
   const [history, setHistory] = useState(false);
   const { chart } = props;
 
@@ -172,37 +168,20 @@ export function Header(props: Props) {
         Print
       </button>
 
-      <div className="menu">
-        <button
-          className={`loopbtn ${props.loop.mode === 'range' ? 'on' : ''}`}
-          onClick={() => setMenu(menu === 'loop' ? null : 'loop')}
-        >
-          ⟲ {props.loop.mode === 'range' ? `A–B ${props.range.from + 1}–${props.range.to + 1}` : props.loop.mode === 'off' ? 'Loop off' : 'Loop'}
-          <span className="caret">▾</span>
-        </button>
-        {menu === 'loop' && (
-          <>
-            <div className="backdrop" onClick={() => setMenu(null)} />
-            <div className="dropdown wide">
-              <div className="grp">
-                {(['off', 'visible', 'range'] as const).map((m) => (
-                  <button
-                    key={m}
-                    className={props.loop.mode === m ? 'active' : ''}
-                    onClick={() => props.onLoopChange({ ...props.loop, mode: m })}
-                  >
-                    {m === 'off' ? 'No loop' : m === 'visible' ? 'Loop visible bars' : 'Loop A–B range'}
-                  </button>
-                ))}
-              </div>
-              <div className="steppers">
-                <label>A <button onClick={() => props.onLoopChange({ ...props.loop, mode: 'range', from: Math.max(1, props.loop.from - 1) })}>−</button><b>{props.loop.from}</b><button onClick={() => props.onLoopChange({ ...props.loop, mode: 'range', from: Math.min(64, props.loop.from + 1) })}>+</button></label>
-                <label>B <button onClick={() => props.onLoopChange({ ...props.loop, mode: 'range', to: Math.max(1, props.loop.to - 1) })}>−</button><b>{props.loop.to}</b><button onClick={() => props.onLoopChange({ ...props.loop, mode: 'range', to: Math.min(64, props.loop.to + 1) })}>+</button></label>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
+      <button
+        className="ctl btn stdbtn manualbtn"
+        onClick={props.onOpenManual}
+        title="Manual (?)"
+        aria-label="Open manual"
+        aria-keyshortcuts="?"
+      >
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
+          <circle cx="8" cy="8" r="6.1" />
+          <path d="M6.1 6.2a1.95 1.95 0 1 1 2.8 1.75c-.55.3-.9.85-.9 1.47v.23" strokeLinecap="round" />
+          <circle cx="8" cy="11.7" r=".85" fill="currentColor" stroke="none" />
+        </svg>
+        <span className="stdbtn-label">Manual</span>
+      </button>
 
       <VersionModal open={history} onClose={() => setHistory(false)} />
 
